@@ -1,18 +1,24 @@
 package com.codepath.android.booksearch.activity;
 
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.codepath.android.booksearch.R;
+import com.codepath.android.booksearch.adapter.BookAdapter;
+import com.codepath.android.booksearch.model.Book;
+import com.squareup.picasso.Picasso;
 
 public class BookDetailActivity extends AppCompatActivity {
     private ImageView ivBookCover;
     private TextView tvTitle;
     private TextView tvAuthor;
+    private Book book;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,8 +30,11 @@ public class BookDetailActivity extends AppCompatActivity {
         tvAuthor = (TextView) findViewById(R.id.tvAuthor);
 
         // Extract book object from intent extras
-
+        book = getIntent().getParcelableExtra("item");
         // Use book object to populate data into views
+        tvTitle.setText(book.getTitle());
+        tvAuthor.setText(book.getAuthor());
+        Picasso.with(this).load(book.getCoverUrl()).into(ivBookCover);
     }
 
 
@@ -33,7 +42,8 @@ public class BookDetailActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_book_detail, menu);
-        return true;
+        getSupportActionBar().setTitle(book.getTitle());
+        return false;
     }
 
     @Override
